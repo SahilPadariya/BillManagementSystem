@@ -41,3 +41,7 @@ HELP.md
 
 # Credentials & Environment
 .env
+
+# Spring Boot config (hide sensitive properties)
+src/main/resources/application.properties
+git rm --cached src/main/resources/application.properties
