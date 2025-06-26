@@ -5,13 +5,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
@@ -37,8 +35,8 @@ public class MailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            helper.setFrom("example@gmail.com");
-            helper.setTo("example@gmail.com");
+            helper.setFrom("sahilpa24@gmail.com");
+            helper.setTo("urvishnavadiya2004@gmail.com");
             helper.setSubject("Customer CSV Report");
             helper.setText("Please find attached customer report CSV file.");
 

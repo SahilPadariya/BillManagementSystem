@@ -1,6 +1,7 @@
 package com.billGenerate.BillGenerate.Service;
 
 import com.billGenerate.BillGenerate.MassageService.WhatsappMsg;
+import com.billGenerate.BillGenerate.TwilioConfig;
 import com.billGenerate.BillGenerate.model.*;
 
 import com.twilio.Twilio;
@@ -19,8 +20,10 @@ public class BillService {
     ProductRepository productrepository;
     @Autowired
     CoustomerRepository coustomerRepository;
-
-    WhatsappMsg whatsappMsg = new WhatsappMsg();
+    @Autowired
+    TwilioConfig twilioConfig;
+    @Autowired
+    WhatsappMsg whatsappMsg;
 
     // Method to add all received products into the database
     public String AddAllProduct(List<Product> products) {
@@ -30,26 +33,24 @@ public class BillService {
 
     // Method to process the purchase of a product
     public String buyProduct(CoustomerDTO info) {
-            Twilio.init("*****", "*****");
 
         Product product = productrepository.findByProductName(info.getProduct_name());
-
         try {
             // Check if requested quantity is more than stock
             if (info.getProduct_count() > product.getStock()) {
-                whatsappMsg.OutOfStoc(); // Send out-of-stock message
+                whatsappMsg.OutOfStoc("+919773198780"); // Send out-of-stock message
                 return "Out Of Stock : stock is " + product.getStock();
             }
 
             int productprice = product.getPrice();// Get unit price
 
-            long calculate_price_withothgst = calculate_Price(productprice, info.getProduct_count());// Calculate price without GST
+            long calculate_price_withothgst = calculatePrice(productprice, info.getProduct_count());// Calculate price without GST
 
             double total_amount = calculate_price_withothgst + calculate_Gst(calculate_price_withothgst); // Add GST
 
             // Simulate payment success/failure
             if (!getRandomBoolean()) {
-                whatsappMsg.UnsuccessBUy();// Send failure message
+                whatsappMsg.UnsuccessBUy("+919773198780");// Send failure message
                 return "Payment Unsuccessfully";
             }
 
@@ -59,21 +60,20 @@ public class BillService {
 
             // Update stock after successful purchase
             product.setStock(product.getStock() - info.getProduct_count());
-            whatsappMsg.SuccessFullyBuy(); // Send success message
+            whatsappMsg.SuccessFullyBuy("+919773198780"); // Send success message
             productrepository.save(product);
             return "Payment SuccessFully";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         finally {
             // Notify if stock is running low
             if (product.getStock()<=5){
-                Message message = Message.creator(
-                        new PhoneNumber("+****"), // TO number (Receiver)
-                        new PhoneNumber("+****"),  // FROM number (Twilio number)
-                        "Sir, Please Update Stock"
-                ).create();
+               whatsappMsg.UpdateStock("+919773198780");
             }
         }
     }
+
     // Simulate a random payment success or failure
     public boolean getRandomBoolean() {
         return Math.random() < 0.5;
@@ -83,7 +83,7 @@ public class BillService {
         return value*(18.0/100);
     }
     // Calculate total price based on quantity and unit price
-    public long calculate_Price(int value,int product) {
+    public long calculatePrice(int value,int product) {
         return value * product;
     }
 }
