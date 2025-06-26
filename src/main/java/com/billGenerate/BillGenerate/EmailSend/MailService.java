@@ -38,7 +38,7 @@ public class MailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setFrom("example@gmail.com");
-            helper.setTo("rahulbhutaiya613@gmail.com");
+            helper.setTo("example@gmail.com");
             helper.setSubject("Customer CSV Report");
             helper.setText("Please find attached customer report CSV file.");
 
