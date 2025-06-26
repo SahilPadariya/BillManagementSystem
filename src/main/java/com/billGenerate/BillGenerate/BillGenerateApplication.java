@@ -23,20 +23,4 @@ public class BillGenerateApplication {
     public static void main(String[] args) {
         SpringApplication.run(BillGenerateApplication.class, args);
     }
-
-//    @PostConstruct
-//    public void makeCsv(){
-//        try (FileWriter fileWriter = new FileWriter("C:\\Users\\krohi\\Downloads\\BillGenerate\\BillGenerate\\src\\main\\java\\com\\billGenerate\\BillGenerate\\Service\\demo.csv");
-//             ICsvBeanWriter iCsvBeanWriter = new CsvBeanWriter(fileWriter, CsvPreference.STANDARD_PREFERENCE);) {
-//
-//            String headers[] = {"Id", "productName", "stock", "price"};
-//            iCsvBeanWriter.writeHeader(headers);
-//
-//            for (Product product : productRepository.findAll()) {
-//                iCsvBeanWriter.write(product, headers);
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
 }
