@@ -30,7 +30,7 @@ public class BillService {
 
     // Method to process the purchase of a product
     public String buyProduct(CoustomerDTO info) {
-            Twilio.init("ACbc359c7e5f5ef7447c38cd4740e32eb9", "c684770480720d38ce23596157c39dce");
+            Twilio.init("*****", "*****");
 
         Product product = productrepository.findByProductName(info.getProduct_name());
 
@@ -67,8 +67,8 @@ public class BillService {
             // Notify if stock is running low
             if (product.getStock()<=5){
                 Message message = Message.creator(
-                        new PhoneNumber("+917990747312"), // TO number (Receiver)
-                        new PhoneNumber("+17625336503"),  // FROM number (Twilio number)
+                        new PhoneNumber("+****"), // TO number (Receiver)
+                        new PhoneNumber("+****"),  // FROM number (Twilio number)
                         "Sir, Please Update Stock"
                 ).create();
             }
